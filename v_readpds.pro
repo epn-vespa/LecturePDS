@@ -368,7 +368,6 @@ endif
 ;     endif else Ndelta =0
 
 
-
    endif else if obj_def[i].type EQ 'TABLE' then begin              ; process any *_TABLE, SERIES, PALETTE, SPECTRUM,  etc
      inform = v_pdspar( label, 'INTERCHANGE_FORMAT', INDEX = index )
      if !ERR EQ -1 then $

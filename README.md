@@ -5,4 +5,6 @@ Versatile PDS3 reader for IDL + opensource clone GDL
 
 Includes specific interface for VIRTIS / Venus-Express and VIRTIS / Rosetta
 
-#### [Documentation](Virtispds_3.2.pdf)
+Current version is 3.4
+
+#### [Documentation](Virtispds_3.4.pdf)

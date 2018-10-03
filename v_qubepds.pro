@@ -856,6 +856,7 @@ function V_QUBEPDS, filename, label, qub, NOSCALE = noscale, SILENT = silent, SU
 ;help, /mem
 
 ; removed in Feb 2008, seems to duplicate V_swapData
+; (this initially handled  SUFFIX_BYTES > *_SUFFIX_ITEM_BYTES after reading - to be done, but after swap)
        If not(nocube) then Core = F_Qube.F_line.C_line else core = 0B
        If SX NE 0 then begin
           BSuffix = F_Qube.F_line.S_line
@@ -875,6 +876,7 @@ function V_QUBEPDS, filename, label, qub, NOSCALE = noscale, SILENT = silent, SU
 ;       element = 0B
         F_Qube = 0B
 ;help, /mem
+
 
       ; If we didn't get a data type we can work with, convert it:
 

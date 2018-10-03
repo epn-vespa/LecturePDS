@@ -1,4 +1,4 @@
-Function V_ListPDS, Dimen0, COUNT=count, SILENT = silent
+Function V_ListPDS, Dimen0, COUNT=count, SILENT = silent, NODELIMITER = Nodelimiter, KEEP_SPACES=keep_spaces 
 
 ;+ $Id: v_listpds.pro,v 1.10 2013/11/05 13:31:27 sophie Exp $
 ;
@@ -31,7 +31,12 @@ Function V_ListPDS, Dimen0, COUNT=count, SILENT = silent
 ;          This may means that the list of values written on several lines, and
 ;          should be provided completely (or that the list is followed by a unit).
 ;
+; KEYWORDS:
 ;	SILENT - Disable warning messages
+;   NODELIMITER - If set, removes string delimiters (double quotes) around 
+;			 _single_ values extracted from a list
+;	KEEP_SPACES - don't remove internal spaces, OK to process lists of strings
+;			- default is to remove all spaces in each element
 ;
 ; EXAMPLES:
 ;	To extract axes names of a Qube (values from AXIS_NAME list):
@@ -49,6 +54,10 @@ Function V_ListPDS, Dimen0, COUNT=count, SILENT = silent
 ;                 to process SOFTWARE_VERSION_ID
 ;          Updated, SE, LESIA, Nov 2012:
 ;				- No longer print message if scalar
+;          Updated, SE, LESIA, March 2017:
+;				- Added NODELIMITER option to remove quotes from individual values
+;          Updated, SE, LESIA, July 2017:
+;				- Added KEEP_SPACES option (for PDS slib)
 ;-
 ;
 ;###########################################################################
@@ -85,7 +94,10 @@ Function V_ListPDS, Dimen0, COUNT=count, SILENT = silent
 ;
 ;--------------------------------------------------------------------
 
-      Dimen=strcompress(Dimen0, /remove)
+
+KEEP_SPACES = keyword_set(KEEP_SPACES)
+
+      Dimen=strcompress(Dimen0, remove=~KEEP_SPACES)
       debut=strmid(dimen,0,1)
       length = strlen(dimen)-1
       fin=strmid(dimen,length,1)
@@ -108,7 +120,7 @@ Function V_ListPDS, Dimen0, COUNT=count, SILENT = silent
       dimen = strmid(dimen,1,length-1)
 
       if (!version.release GE 5.3) then begin
-          Dim = strsplit(dimen, ',', /extract)
+          Dim = strtrim(strsplit(dimen, ',', /extract), 2)
           count = (size(dim))(1)
       endif else begin
 
@@ -130,6 +142,15 @@ Function V_ListPDS, Dimen0, COUNT=count, SILENT = silent
      if type  EQ 1 then type = 2
      Dim0 = Make_array(count, type=type)
      For i=0, count-1 do Dim0(i) = v_str2num(Dim(i))
+
+	If keyword_set(NODELIMITER) then begin
+		 for i=0, count-1 do begin
+		  bid = (strsplit(Dim0(i), '"', /extract, count=nbid))(0)
+		  if nbid EQ 1 then Dim0(i) = bid
+		 endfor
+	Endif
+
+
      return, Dim0
 
 perdu: 

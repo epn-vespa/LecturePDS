@@ -62,7 +62,10 @@ function V_PDSVALUES, label, keyword, abort, Vstructure = Vstruct, COUNT=matches
 ;            Intended to filter extra quotes in VIRTIS Rosetta labels in (numeric) kw such 
 ;				as PROCESSING_LEVEL_ID (ESA specs are different from VIRTIS VEx)
 ;			 Arrays of strings can be processed one elt at a time after reading:
-;				 help, v_listpds('("2","3")') 		; value returned by v_pdspar;			     <Expression>    STRING    = Array[2];				help, v_str2Nnum((v_listpds('("2","3")'))(0), /ext);			     <Expression>    INT       =        2
+;				 help, v_listpds('("2","3")') 		; value returned by v_pdspar
+;			     <Expression>    STRING    = Array[2]
+;				help, v_str2Nnum((v_listpds('("2","3")'))(0), /ext)
+;			     <Expression>    INT       =        2
 ;
 ;
 ; SIDE EFFECTS:
@@ -110,6 +113,8 @@ function V_PDSVALUES, label, keyword, abort, Vstructure = Vstruct, COUNT=matches
 ;	v_pdsvalues: 
 ;     SE, LESIA, Nov 2013, from v_pdspar:
 ;		Parses a complete label and returns everything for future analysis
+;     SE, LESIA, April 2017, for PDS spectral lib:
+;		 Edited in l 185 to search for  '= ' instead of  ' = ' (may be removed afterward ?)
 ;-
 ;
 ;###########################################################################
@@ -179,7 +184,7 @@ lbl = lbl(indiceO)
 
 ;     Loop on lines of the header 
 
- Sep = '='					; SE2012 : try to match '=' with no space, need to filter extra space (see below) - TBC
+ Sep = '= '					; SE2012 : try to match '=' with no space, need to filter extra space (see below) - TBC
  key_end = strpos(lbl,Sep)			;look for ' = ' in all lines of lbl
  r = size(key_end)
  stopper = r(r(r(0)-1))

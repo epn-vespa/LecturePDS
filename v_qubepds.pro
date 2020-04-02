@@ -144,6 +144,8 @@ function V_QUBEPDS, filename, label, qub, NOSCALE = noscale, SILENT = silent, SU
 ;			Will work only if no suffix is present (to be updated)
 ;	   	 S Erard, 5/2013: 
 ;		  - Implemented bottomplane/Z suffix in BSQ + Fixed sideplane type/coeff in BSQ
+;	   	 S Erard, 10/2018: 
+;		  - Use default value (4) if SUFFIX_BYTES is missing (fix for VIMS detached labels)
 ;-
 ;
 ;###########################################################################
@@ -283,6 +285,11 @@ function V_QUBEPDS, filename, label, qub, NOSCALE = noscale, SILENT = silent, SU
   SLbyte = v_pdspar( label_qub, 'LINE_SUFFIX_ITEM_BYTES',COUNT=SLpixes,INDEX= Lpix_ind)
   Sbyte = v_pdspar( label_qub, 'SUFFIX_BYTES',COUNT= temp, INDEX=Suffb_ind)
 
+  If temp EQ 0 then begin	; in case it is missing (VIMS), use default value
+	temp = 1
+	Sbyte = 4
+  endif
+
 ;  if SBpixes * Spixes NE 0 then begin     ; back & side planes
 ;     Spix_ind = [Spix_ind,T_ind]
 ;     ind = sort(Spix_ind)
@@ -308,6 +315,7 @@ function V_QUBEPDS, filename, label, qub, NOSCALE = noscale, SILENT = silent, SU
 
 ;  if Spixes(0) NE Scount(0) or temp(0) NE Scount(0) then message, $
 ;  	'ERROR - '+fname+': SUFFIX_ITEMS and *_SUFFIX_ITEM_BYTES count discrepancy.'
+
   if temp(0) NE Scount(0) then message, $
   	'ERROR - '+fname+': SUFFIX_ITEMS and SUFFIX_BYTES count discrepancy.'
 

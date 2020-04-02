@@ -81,9 +81,9 @@ function V_PDSVALUES, label, keyword, abort, Vstructure = Vstruct, COUNT=matches
 ;
 ; PROCEDURE:
 ;     First removes blank lines and comments from label.
-;     Each element of lbl is searched for a ' = ' or a '=' and the part of each 
-;     that preceeds the ' = ' is saved in the variable 'keyword', with 
-;     any line that contains no ' = ' also saved in keyword. 
+;     Each element of lbl is searched for a '= ' and the part of each 
+;     that preceeds the '= ' is saved in the variable 'keyword', with 
+;     any line that contains no '= ' also saved in keyword. 
 ;     Namespaces are filtered from both 'Name' and 'keyword'.
 ;     Spaces are removed.
 ;     'keyword' is then searched for elements that exactly match 'Name'. 
@@ -111,7 +111,7 @@ function V_PDSVALUES, label, keyword, abort, Vstructure = Vstruct, COUNT=matches
 ;     Updated from SBNIDL 2.0, Stephane Erard, Sept. 2000
 ;     SE, LESIA, Oct 2013: Filter string delimiters (on option only) to support new Rosetta specs
 ;	v_pdsvalues: 
-;     SE, LESIA, Nov 2013, from v_pdspar:
+;     SE, LESIA, Nov 2013, adapted from v_pdspar:
 ;		Parses a complete label and returns everything for future analysis
 ;     SE, LESIA, April 2017, for PDS spectral lib:
 ;		 Edited in l 185 to search for  '= ' instead of  ' = ' (may be removed afterward ?)

@@ -195,7 +195,7 @@ IF sExtension NE 'LBL' THEN BEGIN
         ENDIF
         IF FILE_SEARCH(sFilechanged) NE '' THEN BEGIN
 			  filename = sFilechanged
-			  print, 'Label file found. Changing selection... '
+			  print, 'Detached label found. Changing selection... '
     ENDIF
 ENDIF
 

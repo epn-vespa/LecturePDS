@@ -20,9 +20,8 @@ function V_HEADPDS, filename,remain,SILENT=silent, external= external
 ;
 ; OPTIONAL INPUT KEYWORDS:
 ;
-;     EXTERNAL - handles external files recursively in labels
-;          (will not try to include them if set.
-;          Otherwise, will look for ^STRUCTURE keywords)
+;     EXTERNAL - Includes external files recursively in labels (from ^STRUCTURE keywords)
+;          (will also not try to include them if set when reading a main label)
 ;     SILENT - suppresses console messages
 ;     REMAIN - returns extra text after label, if any exists
 ;
@@ -56,7 +55,7 @@ function V_HEADPDS, filename,remain,SILENT=silent, external= external
 ;
 ; LICENSE
 ;
-;  Copyright (c) 1999-2008, Steéphane Erard, CNRS - Observatoire de Paris
+;  Copyright (c) 1999-2008, Stephane Erard, CNRS - Observatoire de Paris
 ;  All rights reserved.
 ;  Non-profit redistribution and non-profit use in source and binary forms, 
 ;  with or without modification, are permitted provided that the following 

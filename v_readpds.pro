@@ -1,5 +1,6 @@
 function V_READPDS, input_filename, label, INFO=info, NOSCALE = noscale, NOROTATE = norotate, $
-                      VERBOSE = verbose, SILENT =silent, SUFFIX = suf, ListObj = object, objNum= objnum, stop= stop
+            VERBOSE = verbose, SILENT =silent, SUFFIX = suf, ListObj = object, objNum= objnum, $
+            stop= stop, useDetachedLab = useDetachedLab
 
 ;+ $Id: v_readpds.pro,v 1.15 2013/12/05 13:59:00 erard Exp $
 ;
@@ -47,9 +48,10 @@ function V_READPDS, input_filename, label, INFO=info, NOSCALE = noscale, NOROTAT
 ;				the names defined in the label. This option maintains compatibitly with older 
 ;				calling routines, and also allows to read objects with duplicate names (like in version 2.8)
 ;		   		Set it if message "Conflicting or duplicate structure tag definition"
+;		   useDetachedLab - forces usage of detached label if present together with an attached label
 ;
 ; OPTIONAL OUTPUT KEYWORDS:
-;        SUFFIX - A named variable that will contain Qubes suffixes if present.
+;       SUFFIX - A named variable that will contain Qubes suffixes if present.
 ;
 ;       LISTOBJ - A named variable that will contain the list of all PDS objects in the file.
 ;
@@ -155,6 +157,9 @@ function V_READPDS, input_filename, label, INFO=info, NOSCALE = noscale, NOROTAT
 ;       SE, LESIA, Dec 2013:
 ;          Small fix to preserve cubes last dimension if degenerated - Should work this time
 ;			Then extra fix for image dimensions
+;	   	 S Erard, 10/2018: 
+;		  - Now use detached label preferentially (when present) only on option (impossible before)
+;			(fix for VIMS, which has both detached/attached labels)
 ;-
 ;
 ;###########################################################################
@@ -224,9 +229,9 @@ IF sExtension NE 'LBL' THEN BEGIN
         sNamesplit [N_ELEMENTS (sNamesplit) - 1]='lbl'
         sFilechanged = STRJOIN(sNamesplit,'.',/SINGLE)
     ENDIF
-    IF FILE_SEARCH(sFilechanged) NE '' THEN BEGIN
+    IF FILE_SEARCH(sFilechanged) NE '' and keyword_set(useDetachedLab) THEN BEGIN
         filename = sFilechanged
-		print, 'Label file found. Changing selection... '
+		print, 'Detached label found. Changing selection... '
     ENDIF
 ENDIF
 
